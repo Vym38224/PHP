@@ -13,7 +13,8 @@
     }
 
     // echo "Připojení proběhlo úspěšně";
-
+    // echo "<br>";
+    // echo "<br>";
     $sql = "SELECT * FROM student";
     
     $result = mysqli_query($connection, $sql);
@@ -38,14 +39,9 @@
                     <?php echo $student["first_name"] . " " . $student["second_name"]; ?>
                 </li>
             <?php endforeach; ?>
-    <?php else: ?>
-        <p>Žádní žáci nebyli nalezeni</p>
-    <?php endif; ?>
-
-            </tbody>
-        </table>
-
-
-
+            <?php else: ?>
+                <p>Žádní žáci nebyli nalezeni</p>
+            <?php endif; ?>
+        </ul>
 </body>
 </html>
