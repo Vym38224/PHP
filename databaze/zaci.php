@@ -17,8 +17,12 @@
     $sql = "SELECT * FROM student";
     
     $result = mysqli_query($connection, $sql);
-    
-    $students = mysqli_fetch_all($result, MYSQLI_ASSOC);
+    if ($result == false) {
+        echo mysqli_error($connection);
+        exit;
+    } else{
+        $students = mysqli_fetch_all($result, MYSQLI_ASSOC);
+    }
     // var_dump($students);
 ?>
 
@@ -37,15 +41,12 @@
                 <li>
                     <?php echo $student["first_name"] . " " . $student["second_name"]; ?>
                 </li>
+                <a href="jeden-zak.php?id=<?php echo $student["id"]; ?>">Zobrazit informace</a>
             <?php endforeach; ?>
     <?php else: ?>
         <p>Žádní žáci nebyli nalezeni</p>
     <?php endif; ?>
-
-            </tbody>
-        </table>
-
-
+    <p><a href="index.php">Zpět na hlavní stránku</a></p>
 
 </body>
 </html>

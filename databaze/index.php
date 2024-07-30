@@ -13,7 +13,7 @@
 
     <main>
         <section>
-            
+            <a href="zaci.php">Seznam všech žáků</a>
         </section>
     </main>
 
