@@ -13,7 +13,8 @@
     }
 
     // echo "Připojení proběhlo úspěšně";
-
+    // echo "<br>";
+    // echo "<br>";
     $sql = "SELECT * FROM student";
     
     $result = mysqli_query($connection, $sql);
@@ -43,10 +44,11 @@
                 </li>
                 <a href="jeden-zak.php?id=<?php echo $student["id"]; ?>">Zobrazit informace</a>
             <?php endforeach; ?>
+        </ul>
     <?php else: ?>
         <p>Žádní žáci nebyli nalezeni</p>
     <?php endif; ?>
     <p><a href="index.php">Zpět na hlavní stránku</a></p>
-
+    
 </body>
 </html>
