@@ -1,20 +1,10 @@
 <?php 
-
-    $db_host = "localhost";
-    $db_user = "jaroslavvymetal";
-    $db_password = "heslo";
-    $db_name = "skola";
-
-    $connection = mysqli_connect($db_host, $db_user, $db_password, $db_name);
-
-    if (mysqli_connect_error()) {
-        echo mysqli_connect_error();
-        exit;
-    }
+    require_once("database.php");
 
     // echo "Připojení proběhlo úspěšně";
     // echo "<br>";
     // echo "<br>";
+    
     $sql = "SELECT * FROM student";
     
     $result = mysqli_query($connection, $sql);
@@ -25,6 +15,7 @@
         $students = mysqli_fetch_all($result, MYSQLI_ASSOC);
     }
     // var_dump($students);
+    
 ?>
 
 <!DOCTYPE html>
@@ -35,20 +26,23 @@
     <title>Document</title>
 </head>
 <body>
-    <h1>Seznam žáků školy</h1>
-    <?php if (count($students) > 0): ?>
-        <ul>
-            <?php foreach ($students as $student): ?>
-                <li>
-                    <?php echo $student["first_name"] . " " . $student["second_name"]; ?>
-                </li>
-                <a href="jeden-zak.php?id=<?php echo $student["id"]; ?>">Zobrazit informace</a>
-            <?php endforeach; ?>
-        </ul>
-    <?php else: ?>
-        <p>Žádní žáci nebyli nalezeni</p>
-    <?php endif; ?>
-    <p><a href="index.php">Zpět na hlavní stránku</a></p>
-    
+    <header><?php require_once("header.php");?></header>
+    <main>
+        <h2>Seznam žáků školy</h2>
+        <?php if (count($students) > 0): ?>
+            <ul>
+                <?php foreach ($students as $student): ?>
+                    <li>
+                        <?php echo $student["first_name"] . " " . $student["second_name"]; ?>
+                    </li>
+                    <a href="jeden-zak.php?id=<?php echo $student['id']; ?>">Zobrazit informace</a>
+                <?php endforeach; ?>
+            </ul>
+        <?php else: ?>
+            <p>Žádní žáci nebyli nalezeni</p>
+        <?php endif; ?>
+        <p><a href="index.php">Zpět na hlavní stránku</a></p>
+    </main>
+    <footer><?php require_once("footer.php");?></footer>
 </body>
 </html>

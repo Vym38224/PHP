@@ -1,28 +1,18 @@
 <?php 
+    require_once("database.php");
 
-    $db_host = "localhost";
-    $db_user = "jaroslavvymetal";
-    $db_password = "heslo";
-    $db_name = "skola";
-
-    $connection = mysqli_connect($db_host, $db_user, $db_password, $db_name);
-
-    if (mysqli_connect_error()) {
-        echo mysqli_connect_error();
-        exit;
-    }
-
-    $sql = "SELECT * FROM student WHERE id = " . $_GET["id"];
+    if (isset($_GET["id"]) and is_numeric($_GET["id"])) {
+        $sql = "SELECT * FROM student WHERE id = " . $_GET["id"];
     
-    $result = mysqli_query($connection, $sql);
+        $result = mysqli_query($connection, $sql);
 
-    if ($result == false) {
-        echo mysqli_error($connection);
-        exit;
-    } else{
-        $students = mysqli_fetch_assoc($result);
+        if ($result == false) {
+            echo mysqli_error($connection);
+            exit;
+        } else{
+            $students = mysqli_fetch_assoc($result);
+        }
     }
-    // var_dump($students);
 ?>
 
 <!DOCTYPE html>
@@ -34,12 +24,10 @@
     <title>Document</title>
 </head>
 <body>
-    <header>
-        <h1>Informace o žákovi</h1>
-    </header>
-
+    <header><?php require_once("header.php");?></header>
     <main>
         <section>
+            <h2>Informace o žákovi</h2>
             <?php if ($students == NULL): ?>
                 <p>Žák nenalezen</p>
             <?php else: ?>
@@ -49,7 +37,6 @@
                 <p>Kolej: <?php echo $students["college"]; ?></p>
             <?php endif; ?>  
     </main>
-
-    <footer></footer>
+    <footer><?php require_once("footer.php");?></footer>
 </body>
 </html>

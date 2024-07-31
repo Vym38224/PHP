@@ -7,9 +7,7 @@
     <title>Document</title>
 </head>
 <body>
-    <header>
-        <h1>Škola čar a kouzel v Bradavicích</h1>
-    </header>
+    <header><?php require_once("header.php");?></header>
 
     <main>
         <section>
@@ -17,6 +15,6 @@
         </section>
     </main>
 
-    <footer></footer>
+    <footer><?php require_once("footer.php");?></footer>
 </body>
 </html>
