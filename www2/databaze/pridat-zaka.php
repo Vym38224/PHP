@@ -1,5 +1,17 @@
 <?php
+    require_once("assets/database.php");
+    if ($_SERVER["REQUEST_METHOD"] == "POST") {
+        $first_name = $_POST["first_name"];
+        $second_name = $_POST["second_name"];
+        $age = $_POST["age"];
+        $life = $_POST["life"];
+        $college = $_POST["college"];
 
+        $sql = "INSERT INTO student (first_name, second_name, age, life, college) VALUES ('$first_name', '$second_name', '$age', '$life', '$college')";
+        mysqli_query($connection, $sql);
+        mysqli_close($connection);
+        header("Location: pridat-zaka.php");
+    }
 
 ?>
 
@@ -30,8 +42,8 @@
                 <br>
                 <input type="submit" value="Přidat žáka">
             </form>
+            <p><a href="index.php">Zpět na hlavní stránku</a></p>
         </section>
-
     </main>
     <footer><?php require_once("assets/footer.php");?></footer>
 </body>
