@@ -7,14 +7,15 @@
     <title>Document</title>
 </head>
 <body>
-    <header><?php require_once("header.php");?></header>
+    <header><?php require_once("assets/header.php");?></header>
 
     <main>
         <section>
+            <h1>Škola čar a kouzel v Bradavicích</h1>
             <a href="zaci.php">Seznam všech žáků</a>
         </section>
     </main>
 
-    <footer><?php require_once("footer.php");?></footer>
+    <footer><?php require_once("assets/footer.php");?></footer>
 </body>
 </html>

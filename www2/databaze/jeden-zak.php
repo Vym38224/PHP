@@ -1,5 +1,5 @@
 <?php 
-    require_once("database.php");
+    require_once("assets/database.php");
 
     if (isset($_GET["id"]) and is_numeric($_GET["id"])) {
         $sql = "SELECT * FROM student WHERE id = " . $_GET["id"];
@@ -24,7 +24,7 @@
     <title>Document</title>
 </head>
 <body>
-    <header><?php require_once("header.php");?></header>
+    <header><?php require_once("assets/header.php");?></header>
     <main>
         <section>
             <h2>Informace o žákovi</h2>
@@ -35,8 +35,9 @@
                 <p>Věk: <?php echo $students["age"]; ?></p>
                 <p>Život: <?php echo $students["life"]; ?></p>
                 <p>Kolej: <?php echo $students["college"]; ?></p>
-            <?php endif; ?>  
+            <?php endif; ?> 
+        </section> 
     </main>
-    <footer><?php require_once("footer.php");?></footer>
+    <footer><?php require_once("assets/footer.php");?></footer>
 </body>
 </html>
