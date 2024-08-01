@@ -1,21 +1,34 @@
 <?php
-    require_once("assets/database.php");
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
-        $first_name = $_POST["first_name"];
-        $second_name = $_POST["second_name"];
-        $age = $_POST["age"];
-        $life = $_POST["life"];
-        $college = $_POST["college"];
 
-        $sql = "INSERT INTO student (first_name, second_name, age, life, college) VALUES ('$first_name', '$second_name', '$age', '$life', '$college')";
-        mysqli_query($connection, $sql);
+        require_once("assets/database.php");
+
+        $first_name = mysqli_escape_string($connection, $_POST["first_name"]);
+        $second_name = mysqli_escape_string($connection, $_POST["second_name"]);
+        $age = mysqli_escape_string($connection, $_POST["age"]);
+        $life = mysqli_escape_string($connection, $_POST["life"]);
+        $college = mysqli_escape_string($connection, $_POST["college"]);
+
+        $sql = "INSERT INTO student (first_name, second_name, age, life, college) 
+        VALUES ('$first_name',
+                '$second_name',
+                '$age',
+                '$life',
+                 $college')";
+
+        $result = mysqli_query($connection, $sql);
+        if ($result == false) {
+            echo mysqli_error($connection);
+        } else{
+            $id = mysqli_insert_id($connection);
+            echo "Žák byl úspěšně přidán s id $id.";
+        }
+
         mysqli_close($connection);
         header("Location: pridat-zaka.php");
     }
 
 ?>
-
-
 
 <!DOCTYPE html>
 <html lang="cs">
