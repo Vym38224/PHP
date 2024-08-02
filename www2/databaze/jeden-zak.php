@@ -1,5 +1,6 @@
 <?php 
     require_once("assets/database.php");
+    $connection = connectionDB();
 
     if (isset($_GET["id"]) and is_numeric($_GET["id"])) {
         $sql = "SELECT * FROM student WHERE id = " . $_GET["id"];
@@ -31,10 +32,10 @@
             <?php if ($students == NULL): ?>
                 <p>Žák nenalezen</p>
             <?php else: ?>
-                <h2><?php echo $students["first_name"] . " " . $students["second_name"]; ?></h2>
-                <p>Věk: <?php echo $students["age"]; ?></p>
-                <p>Život: <?php echo $students["life"]; ?></p>
-                <p>Kolej: <?php echo $students["college"]; ?></p>
+                <h2><?php echo htmlspecialchars($students["first_name"] . " " . $students["second_name"]); ?></h2>
+                <p>Věk: <?php echo htmlspecialchars($students["age"]); ?></p>
+                <p>Život: <?php echo htmlspecialchars($students["life"]); ?></p>
+                <p>Kolej: <?php echo htmlspecialchars( $students["college"]); ?></p>
             <?php endif; ?> 
         </section> 
     </main>

@@ -1,9 +1,6 @@
 <?php 
     require_once("assets/database.php");
-
-    // echo "Připojení proběhlo úspěšně";
-    // echo "<br>";
-    // echo "<br>";
+    $connection = connectionDB();
     
     $sql = "SELECT * FROM student";
     
@@ -34,7 +31,7 @@
                 <ul>
                     <?php foreach ($students as $student): ?>
                         <li>
-                            <?php echo $student["first_name"] . " " . $student["second_name"]; ?>
+                            <?php echo htmlspecialchars($student["first_name"] . " " . $student["second_name"]); ?>
                         </li>
                         <a href="jeden-zak.php?id=<?php echo $student['id']; ?>">Zobrazit informace</a>
                     <?php endforeach; ?>

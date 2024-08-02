@@ -1,4 +1,11 @@
 <?php 
+/** 
+* Připojení k databázi
+*
+* @return object - reprezentující připojení k databázi
+*/ 
+
+function connectionDB(){
     $db_host = "localhost";
     $db_user = "jaroslavvymetal";
     $db_password = "heslo";
@@ -10,3 +17,5 @@
         echo mysqli_connect_error();
         exit;
     }
+    return $connection;
+}
