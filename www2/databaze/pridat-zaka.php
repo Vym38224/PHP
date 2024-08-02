@@ -100,7 +100,6 @@
                 <br>
                 <input type="submit" value="Přidat žáka">
             </form>
-            <p><a href="index.php">Zpět na hlavní stránku</a></p>
         </section>
     </main>
     <footer><?php require_once("assets/footer.php");?></footer>

@@ -40,7 +40,6 @@
                 <p>Žádní žáci nebyli nalezeni</p>
             <?php endif; ?>
         </section>
-        <p><a href="index.php">Zpět na hlavní stránku</a></p>
     </main>
     <footer><?php require_once("assets/footer.php");?></footer>
 </body>

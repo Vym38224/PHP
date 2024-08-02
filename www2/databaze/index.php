@@ -12,8 +12,6 @@
     <main>
         <section>
             <h1>Škola čar a kouzel v Bradavicích</h1>
-            <a href="zaci.php">Seznam všech žáků</a>
-            <p><a href="pridat-zaka.php">Přidat žáka</a></p>
         </section>
     </main>
 

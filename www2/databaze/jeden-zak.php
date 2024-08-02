@@ -1,18 +1,11 @@
 <?php 
     require_once("assets/database.php");
+    require_once("assets/zak.php");
+
     $connection = connectionDB();
 
     if (isset($_GET["id"]) and is_numeric($_GET["id"])) {
-        $sql = "SELECT * FROM student WHERE id = " . $_GET["id"];
-    
-        $result = mysqli_query($connection, $sql);
-
-        if ($result == false) {
-            echo mysqli_error($connection);
-            exit;
-        } else{
-            $students = mysqli_fetch_assoc($result);
-        }
+        $students = getStudents($connection, $_GET["id"]);
     }
 ?>
 
