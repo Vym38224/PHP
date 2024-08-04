@@ -62,44 +62,7 @@
     <header><?php require_once("assets/header.php");?></header>
     <main>
         <section>
-            <h1>Přidání žáka</h1>
-            <form action="pridat-zaka.php" method="post">               
-                <input type="text" 
-                        name="first_name" 
-                        id="first_name" 
-                        placeholder="Jméno" 
-                        required
-                        value = "<?php echo htmlspecialchars($first_name)?>">    
-                <br>                
-                <input type="text"
-                        name="second_name" 
-                        id="second_name" 
-                        placeholder="Příjmení" 
-                        required
-                        value = "<?php echo htmlspecialchars($second_name)?>">
-                <br>                
-                <input type="number"
-                        name="age" 
-                        id="age" 
-                        placeholder="Věk" 
-                        required
-                        value = "<?php echo htmlspecialchars($age)?>">
-                <br>              
-                <textarea type="text"
-                            name="life" 
-                            id="life" 
-                            placeholder="Život"
-                            required><?php echo htmlspecialchars($life)?></textarea>
-                <br>
-                <input type="text"
-                        name="college" 
-                        id="college" 
-                        placeholder="Kolej" 
-                        required
-                        value = "<?php echo htmlspecialchars($college)?>">
-                <br>
-                <input type="submit" value="Přidat žáka">
-            </form>
+           <?php require_once("assets/formular-zak.php");?>
         </section>
     </main>
     <footer><?php require_once("assets/footer.php");?></footer>

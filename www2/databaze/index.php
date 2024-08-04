@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="cs">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -7,14 +7,12 @@
     <title>Document</title>
 </head>
 <body>
-    <header><?php require_once("assets/header.php");?></header>
-
+    <?php require "assets/header.php"; ?>
     <main>
-        <section>
+        <section class="main-heading">
             <h1>Škola čar a kouzel v Bradavicích</h1>
         </section>
     </main>
-
-    <footer><?php require_once("assets/footer.php");?></footer>
+    <?php require "assets/footer.php"; ?>
 </body>
 </html>

@@ -5,7 +5,7 @@
     $connection = connectionDB();
 
     if (isset($_GET["id"]) and is_numeric($_GET["id"])) {
-        $students = getStudents($connection, $_GET["id"]);
+        $students = getStudent($connection, $_GET["id"]);
     }
 ?>
 
@@ -31,6 +31,10 @@
                 <p>Kolej: <?php echo htmlspecialchars( $students["college"]); ?></p>
             <?php endif; ?> 
         </section> 
+        <section class="buttons">
+                <a href="editace-zaka.php?id=<?= $students['id'] ?>">Editovat</a>
+                <a href="delete-zak.php?id=<?= $students['id'] ?>">Vymazat</a>
+        </section>      
     </main>
     <footer><?php require_once("assets/footer.php");?></footer>
 </body>
