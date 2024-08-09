@@ -1,1 +1,1 @@
-Všechna práva vyhrazena © 2024
+<footer>Všechna práva vyhrazena © 2024</footer>
