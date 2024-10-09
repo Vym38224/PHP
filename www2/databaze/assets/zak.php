@@ -12,7 +12,8 @@ require "url.php";
  * @return array - (associativní pole) vrací řádek z tabulky student
  * 
  */
-function getStudent($connection, $id){
+function getStudent($connection, $id)
+{
     $sql = "SELECT *
             FROM student
             WHERE id = ?";
@@ -22,12 +23,11 @@ function getStudent($connection, $id){
         echo mysqli_error($connection);
     } else {
         mysqli_stmt_bind_param($stmt, "i", $id);
-        if(mysqli_stmt_execute($stmt)){
+        if (mysqli_stmt_execute($stmt)) {
             $result = mysqli_stmt_get_result($stmt);
-            return mysqli_fetch_array($result, MYSQLI_ASSOC);        
+            return mysqli_fetch_array($result, MYSQLI_ASSOC);
         }
     }
-   
 }
 
 /**
@@ -45,7 +45,8 @@ function getStudent($connection, $id){
  * @return void 
  * 
  */
-function updateStudent($connection, $first_name, $second_name, $age, $life, $college, $id){
+function updateStudent($connection, $first_name, $second_name, $age, $life, $college, $id)
+{
 
     $sql = "UPDATE student
                    SET first_name = ?,
@@ -54,15 +55,15 @@ function updateStudent($connection, $first_name, $second_name, $age, $life, $col
                        life = ?,
                        college = ?
                 WHERE id = ?";
-    
+
     $stmt = mysqli_prepare($connection, $sql);
 
     if (!$stmt) {
-            echo mysqli_error($connection);
+        echo mysqli_error($connection);
     } else {
         mysqli_stmt_bind_param($stmt, "ssissi", $first_name, $second_name, $age, $life, $college, $id);
 
-        if(mysqli_stmt_execute($stmt)) {
+        if (mysqli_stmt_execute($stmt)) {
             redirectUrl("/www2databaze/jeden-zak.php?id=$id");
         }
     }
@@ -78,11 +79,12 @@ function updateStudent($connection, $first_name, $second_name, $age, $life, $col
  * 
  * @return void
  */
-function deleteStudent($connection, $id){
+function deleteStudent($connection, $id)
+{
     $sql = "DELETE
             FROM student
             WHERE id = ?";
-    
+
     $stmt = mysqli_prepare($connection, $sql);
 
     if ($stmt === false) {
@@ -105,17 +107,18 @@ function deleteStudent($connection, $id){
  * 
  * @return array pole objektů, kde každý objekt je jeden žák  
  */
-function getAllStudents($connection, $columns = "*"){
+function getAllStudents($connection, $columns = "*")
+{
     $sql = "SELECT $columns 
             FROM student";
 
     $result = mysqli_query($connection, $sql);
-    
+
     if ($result === false) {
         echo mysqli_error($connection);
     } else {
         $allStudents = mysqli_fetch_all($result, MYSQLI_ASSOC);
-        return $allStudents;    
+        return $allStudents;
     }
 }
 
@@ -126,27 +129,26 @@ function getAllStudents($connection, $columns = "*"){
  * Přidání žáka do databáze a přesměruje nás na profil žáka
  * 
  * @param object $connection - připojení do databáze
- * @param string $first_name - křestní jméno žáka
- * @param string $second_name - příjmení žáka
- * @param integer $age - věk žáka
- * @param string $life - podrobnosti o žákovi
- * @param string $college - kolej žáka
+ * @param string $name - jméno
+ * @param string $password - heslo
+ * 
  * 
  * @return void
  */
-function createStudent($connection, $first_name, $second_name, $age, $life, $college) {
+function createStudent($connection, $name, $password)
+{
 
-    $sql = "INSERT INTO student (first_name, second_name, age, life, college) 
-    VALUES (?, ?, ?, ?, ?)";
+    $sql = "INSERT INTO student (name, password) 
+    VALUES (?, ?)";
 
     $statement = mysqli_prepare($connection, $sql);
 
     if ($statement === false) {
         echo mysqli_error($connection);
     } else {
-        mysqli_stmt_bind_param($statement, "ssiss", $first_name, $second_name, $age, $life, $college);
+        mysqli_stmt_bind_param($statement, "ssiss", $name, $password);
 
-        if(mysqli_stmt_execute($statement)) {
+        if (mysqli_stmt_execute($statement)) {
             $id = mysqli_insert_id($connection);
             redirectUrl("/www2databaze/jeden-zak.php?id=$id");
         } else {

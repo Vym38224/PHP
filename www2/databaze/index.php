@@ -1,20 +1,13 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="./css/header.css">
-    <script src="https://kit.fontawesome.com/3f445dc76e.js" crossorigin="anonymous"></script>
+<?php
+// Získání cesty z URL
+$path = isset($_GET['path']) ? $_GET['path'] : '';
 
-</head>
-<body>
-    <?php require "assets/header.php"; ?>
-    <main>
-        <section class="main-heading">
-            <h1>Škola čar a kouzel v Bradavicích</h1>
-        </section>
-    </main>
-    <?php require "assets/footer.php"; ?>
-</body>
-</html>
+// Kontrola, zda soubor existuje
+if ($path && file_exists($path . '.php')) {
+    require $path . '.php';
+} else {
+    // Zobrazení chybové stránky 404
+    http_response_code(404);
+    echo "<h1>404 Not Found</h1>";
+    echo "<p>Stránka, kterou hledáte, neexistuje.</p>";
+}

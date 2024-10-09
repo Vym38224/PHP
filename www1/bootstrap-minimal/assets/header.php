@@ -9,7 +9,7 @@ $current_page = basename($_SERVER['REQUEST_URI']);
         <span class="navbar-toggler-icon"></span>
     </button>
 
-    <a class="navbar-brand col-md-3 col-lg-2 me-0 px-3 fs-6" href="#">simple administration</a>
+    <a class="navbar-brand col-md-3 col-lg-2 me-0 px-3 fs-6" href="registrace-form.php">simple administration</a>
 
     <div class="navbar-nav">
         <div class="nav-item text-nowrap">

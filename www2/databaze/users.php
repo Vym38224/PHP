@@ -1,12 +1,18 @@
 <?php
 require_once("assets/database.php");
-require_once("assets/zak.php");
-
 $connection = connectionDB();
 
-if (isset($_GET["id"]) and is_numeric($_GET["id"])) {
-    $students = getStudent($connection, $_GET["id"]);
+$sql = "SELECT * FROM student";
+
+$result = mysqli_query($connection, $sql);
+if ($result == false) {
+    echo mysqli_error($connection);
+    exit;
+} else {
+    $students = mysqli_fetch_all($result, MYSQLI_ASSOC);
 }
+// var_dump($students);
+
 ?>
 
 <!DOCTYPE html>
@@ -14,9 +20,8 @@ if (isset($_GET["id"]) and is_numeric($_GET["id"])) {
 
 <head>
     <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Users</title>
     <link rel="stylesheet" href="./bootstrap.css">
     <link rel="stylesheet" href="./bootstrap-icons.css">
 </head>
@@ -41,17 +46,20 @@ if (isset($_GET["id"]) and is_numeric($_GET["id"])) {
 <body>
     <header><?php require_once("assets/header.php"); ?></header>
     <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4 pt-3 pb-3">
+        <h1>Users</h1>
         <section>
-            <h2 class="pb-3 border-bottom">Informace o žákovi</h2>
-            <?php if ($students == NULL): ?>
-                <p>Žák nenalezen</p>
+            <?php if (count($students) > 0): ?>
+                <ul>
+                    <?php foreach ($students as $student): ?>
+                        <li>
+                            <?php echo htmlspecialchars($student["name"]); ?>
+                        </li>
+                        <button><a href="jeden-zak.php?id=<?php echo $student['id']; ?>">Zobrazit informace</a></button>
+                    <?php endforeach; ?>
+                </ul>
             <?php else: ?>
-                <h2><?php echo htmlspecialchars($students["name"]); ?></h2>
-                <p>Heslo: <?php echo htmlspecialchars($students["password"]); ?></p>
+                <p>Žádní žáci nebyli nalezeni</p>
             <?php endif; ?>
-        </section>
-        <section class="buttons">
-            <button><a href="delete-zak.php?id=<?= $students['id'] ?>">Odhlásit</a></button>
         </section>
     </main>
     <footer><?php require_once("assets/footer.php"); ?></footer>
