@@ -63,13 +63,12 @@ $students = getAllStudents($connection);
 <body>
     <header><?php require_once("assets/header.php"); ?></header>
     <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4 pt-3 pb-3">
-        <?php if ($is_admin && $_SESSION["username"] == $first_name): ?>
-            <button class="btn btn-primary" onclick="window.location.href='registrace-form.php'">Přidat uživatele</button>
-        <?php endif; ?>
         <section>
             <h2 class="pb-3 border-bottom">Seznam uživatelů</h2>
             <p>Přihlášen jako: <?php echo htmlspecialchars($_SESSION["username"]); ?></p>
-            <a href="logout.php">Odhlásit se</a>
+            <?php if ($is_admin && $_SESSION["username"] == $first_name): ?>
+                <button class="btn btn-primary" onclick="window.location.href='registrace-form.php'">Přidat uživatele</button>
+            <?php endif; ?>
             <table class="table">
                 <thead>
                     <tr>
