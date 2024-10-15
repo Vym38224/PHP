@@ -1,3 +1,33 @@
+<?php
+require "assets/database.php";
+require "assets/zak.php";
+$connection = connectionDB();
+
+$last_logged_in_users = [];
+if (file_exists('logins.json')) {
+    $last_logged_in_users = json_decode(file_get_contents('logins.json'), true);
+}
+
+session_start();
+
+if (!isset($_SESSION["username"])) {
+    header("Location: login.php");
+    exit();
+}
+
+// Smazání uživatele
+if (isset($_POST['delete_user'])) {
+    $email_to_delete = $_POST['email'];
+    $last_logged_in_users = array_filter($last_logged_in_users, function ($user) use ($email_to_delete) {
+        return $user['email'] !== $email_to_delete;
+    });
+    file_put_contents('logins.json', json_encode($last_logged_in_users));
+    header("Location: dashboard.php");
+    exit();
+}
+?>
+
+
 <!doctype html>
 <html lang="en">
 
@@ -40,36 +70,40 @@
     </header>
     <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4 pt-3 pb-3">
         <h1 class="pb-3 border-bottom">Dashboard</h1>
-
-        <section class="mt-5">
-            <h2>Table example</h2>
+        <section>
+            <h2 class="pb-3 border-bottom">Posledních 10 přihlášených uživatelů</h2>
             <table class="table">
                 <thead>
                     <tr>
-                        <th scope="col">#</th>
-                        <th scope="col">First</th>
-                        <th scope="col">Last</th>
-                        <th scope="col">Handle</th>
+                        <th>Jméno</th>
+                        <th>Příjmení</th>
+                        <th>E-mail</th>
+                        <th>Telefon</th>
+                        <th>Pracovna</th>
+                        <th>Popis</th>
+                        <th>Heslo</th>
+                        <th>Je Správce</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <th scope="row">1</th>
-                        <td>Mark</td>
-                        <td>Otto</td>
-                        <td>@mdo</td>
-                    </tr>
-                    <tr>
-                        <th scope="row">2</th>
-                        <td>Jacob</td>
-                        <td>Thornton</td>
-                        <td>@fat</td>
-                    </tr>
-                    <tr>
-                        <th scope="row">3</th>
-                        <td colspan="2">Larry the Bird</td>
-                        <td>@twitter</td>
-                    </tr>
+                    <?php foreach ($last_logged_in_users as $user): ?>
+                        <tr>
+                            <td><?php echo htmlspecialchars($user["first_name"]); ?></td>
+                            <td><?php echo htmlspecialchars($user["last_name"]); ?></td>
+                            <td><?php echo htmlspecialchars($user["email"]); ?></td>
+                            <td><?php echo htmlspecialchars($user["mobile"]); ?></td>
+                            <td><?php echo htmlspecialchars($user["room"]); ?></td>
+                            <td><?php echo htmlspecialchars($user["life"]); ?></td>
+                            <td><?php echo htmlspecialchars($user["password"]); ?></td>
+                            <td><?php echo htmlspecialchars($user["is_admin"]); ?></td>
+                            <td>
+                                <form method="POST" style="display:inline;">
+                                    <input type="hidden" name="email" value="<?php echo htmlspecialchars($user["email"]); ?>">
+                                    <button type="submit" name="delete_user" class="btn btn-danger">Smazat</button>
+                                </form>
+                            </td>
+                        </tr>
+                    <?php endforeach; ?>
                 </tbody>
             </table>
         </section>

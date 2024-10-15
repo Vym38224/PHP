@@ -46,8 +46,8 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4 pt-3 pb-3">
         <section class="delete-form">
             <form method="POST">
-                <p>Jste si jisti, že chcete tohoto žáka smazat?</p>
-                <button>Smazat</button>
+                <p>Jste si jisti, že chcete tohoto uživatele odhlásit?</p>
+                <button>Odhlásit</button>
                 <button><a href="jeden-zak.php?id=<?= $_GET['id'] ?>">Zrušit</a></button>
             </form>
         </section>

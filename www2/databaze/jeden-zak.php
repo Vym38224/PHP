@@ -46,12 +46,21 @@ if (isset($_GET["id"]) and is_numeric($_GET["id"])) {
             <?php if ($students == NULL): ?>
                 <p>Žák nenalezen</p>
             <?php else: ?>
-                <h2><?php echo htmlspecialchars($students["name"]); ?></h2>
+                <h2>Jméno: <?php echo htmlspecialchars($students["first_name"]); ?></h2>
+                <h2>Příjmení: <?php echo htmlspecialchars($students["last_name"]); ?></h2>
+                <p>E-mail: <?php echo htmlspecialchars($students["email"]); ?></p>
+                <p>Telefoní číslo: <?php echo htmlspecialchars($students["mobile"]); ?></p>
+                <p>Pracovna: <?php echo htmlspecialchars($students["room"]); ?></p>
+                <p>Popis: <?php echo htmlspecialchars($students["life"]); ?></p>
                 <p>Heslo: <?php echo htmlspecialchars($students["password"]); ?></p>
+                <p>Je Správce: <?php echo htmlspecialchars($students["is_admin"]); ?></p>
+
+
             <?php endif; ?>
         </section>
         <section class="buttons">
             <button><a href="delete-zak.php?id=<?= $students['id'] ?>">Odhlásit</a></button>
+            <button><a href="editace-zaka.php?id=<?= $students['id'] ?>">Editovat</a></button>
         </section>
     </main>
     <footer><?php require_once("assets/footer.php"); ?></footer>

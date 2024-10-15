@@ -3,19 +3,31 @@
 $current_page = basename($_SERVER['REQUEST_URI']);
 ?>
 
-<header class="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0 shadow">
-    <button class="navbar-toggler d-md-none collapsed m-2 b-0" type="button" data-bs-toggle="collapse"
-        data-bs-target="#sidebarMenu" aria-controls="sidebarMenu" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-    </button>
-
-    <a class="navbar-brand col-md-3 col-lg-2 me-0 px-3 fs-6" href="registrace-form.php">simple administration</a>
-
-    <div class="navbar-nav">
-        <div class="nav-item text-nowrap">
-            <a class="nav-link px-3" href="#">logout</a>
+<header>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#">Administrace</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <?php if (isset($_SESSION["username"])): ?>
+                        <li class="nav-item">
+                            <span class="nav-link">Přihlášen jako: <?php echo htmlspecialchars($_SESSION["username"]); ?></span>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="logout.php">Odhlásit se</a>
+                        </li>
+                    <?php else: ?>
+                        <li class="nav-item">
+                            <a class="nav-link" href="login.php">Přihlásit se</a>
+                        </li>
+                    <?php endif; ?>
+                </ul>
+            </div>
         </div>
-    </div>
+    </nav>
 </header>
 
 <div class="container-fluid">

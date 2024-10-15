@@ -30,44 +30,52 @@ function getStudent($connection, $id)
     }
 }
 
+
+
 /**
- * 
  * Updatuje informace o žákovi v databázi
  * 
  * @param object $connection - napojení na databázi
- * @param string $first_name - křestní jméno žáka
- * @param string $second_name - příjmení žáka
- * @param integer $age - věk žáka
- * @param string $life - informace o žákovi
- * @param string $college - kolej žáka
+ * @param string $first_name - jméno žáka
+ * @param string $last_name - příjmení žáka
+ * @param string $email - email žáka
+ * @param string $mobile - telefon žáka
+ * @param string $room - pracovna žáka
+ * @param string $life - popisek žáka
+ * @param string $password - heslo žáka
+ * @param string $is_admin - správce žáka
  * @param integer $id - id žáka
  * 
  * @return void 
- * 
  */
-function updateStudent($connection, $first_name, $second_name, $age, $life, $college, $id)
+function updateStudent($connection, $first_name, $last_name, $email, $mobile, $room, $life, $password, $is_admin, $id)
 {
-
     $sql = "UPDATE student
-                   SET first_name = ?,
-                       second_name = ?,
-                       age = ?,
-                       life = ?,
-                       college = ?
-                WHERE id = ?";
+            SET first_name = ?,
+                last_name = ?,
+                email = ?,
+                mobile = ?,
+                room = ?,
+                life = ?,
+                password = ?,
+                is_admin = ?
+            WHERE id = ?";
 
     $stmt = mysqli_prepare($connection, $sql);
 
     if (!$stmt) {
         echo mysqli_error($connection);
     } else {
-        mysqli_stmt_bind_param($stmt, "ssissi", $first_name, $second_name, $age, $life, $college, $id);
-
+        mysqli_stmt_bind_param($stmt, "sssissssi", $first_name, $last_name, $email, $mobile, $room, $life, $password, $is_admin, $id);
         if (mysqli_stmt_execute($stmt)) {
-            redirectUrl("/www2databaze/jeden-zak.php?id=$id");
+            echo "Informace o žákovi byly úspěšně aktualizovány.";
+        } else {
+            echo "Chyba při aktualizaci informací o žákovi: " . mysqli_stmt_error($stmt);
         }
+        mysqli_stmt_close($stmt);
     }
 }
+
 
 
 /**
@@ -128,25 +136,31 @@ function getAllStudents($connection, $columns = "*")
  * 
  * Přidání žáka do databáze a přesměruje nás na profil žáka
  * 
- * @param object $connection - připojení do databáze
- * @param string $name - jméno
+ ** @param object $connection - napojení na databázi
+ * @param string $first_name - jméno 
+ * @param string $last_name - přijmení 
+ * @param string $email - e-mail 
+ * @param int $mobile - telefoní číslo
+ * @param string $room - pracovna
+ * @param string $life - popisek
  * @param string $password - heslo
+ * @param boolean $is_admin - je, není správce
  * 
  * 
  * @return void
  */
-function createStudent($connection, $name, $password)
+function createStudent($connection, $first_name, $last_name, $email, $mobile, $room, $life, $password, $is_admin, $id)
 {
 
-    $sql = "INSERT INTO student (name, password) 
-    VALUES (?, ?)";
+    $sql = "INSERT INTO student (first_name, last_name, email, mobile, room, life, password, is_admin) 
+    VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
 
     $statement = mysqli_prepare($connection, $sql);
 
     if ($statement === false) {
         echo mysqli_error($connection);
     } else {
-        mysqli_stmt_bind_param($statement, "ssiss", $name, $password);
+        mysqli_stmt_bind_param($statement, "sssisssb", $connection, $first_name, $last_name, $email, $mobile, $room, $life, $password, $is_admin);
 
         if (mysqli_stmt_execute($statement)) {
             $id = mysqli_insert_id($connection);

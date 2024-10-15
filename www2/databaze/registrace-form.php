@@ -1,82 +1,100 @@
 <?php
-require_once("assets/database.php");
-
-$name = null;
-$password = null;
+require "assets/database.php";
+$connection = connectionDB();
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    $first_name = mysqli_real_escape_string($connection, $_POST["first_name"]);
+    $last_name = mysqli_real_escape_string($connection, $_POST["last_name"]);
+    $email = mysqli_real_escape_string($connection, $_POST["email"]);
+    $mobile = mysqli_real_escape_string($connection, $_POST["mobile"]);
+    $room = mysqli_real_escape_string($connection, $_POST["room"]);
+    $life = mysqli_real_escape_string($connection, $_POST["life"]);
+    $password = mysqli_real_escape_string($connection, $_POST["password"]);
+    $is_admin = mysqli_real_escape_string($connection, $_POST["is_admin"]);
 
-    $name = $_POST["name"];
-    $password = $_POST["password"];
+    $sql = "INSERT INTO student (first_name, last_name, email, mobile, room, life, password, is_admin) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+    $stmt = mysqli_prepare($connection, $sql);
 
-    if (empty($_POST["name"]) or empty($_POST["password"])) {
-        die("Vyplňte všechny údaje.");
+    if ($stmt === false) {
+        die('Prepare failed: ' . mysqli_error($connection));
     }
 
-    $connection = connectionDB();
+    mysqli_stmt_bind_param($stmt, "sssissss", $first_name, $last_name, $email, $mobile, $room, $life, $password, $is_admin);
 
-    $name = mysqli_escape_string($connection, $_POST["name"]);
-    $password = mysqli_escape_string($connection, $_POST["password"]);
-
-    $sql = "INSERT INTO student (name, password) 
-        VALUES (?, ?)";
-
-    $statement = mysqli_prepare($connection, $sql);
-
-    if ($statement === false) {
-        echo mysqli_error($connection);
-    } else {
-        mysqli_stmt_bind_param($statement, "ss", $name, $password);
-
-        if (mysqli_stmt_execute($statement)) {
-            $id = mysqli_insert_id($connection);
-            // echo "Žák byl úspěšně přidán s id $id.";
-            // přesměrování
-            header("Location: dashboard.php?id=$id");
-        } else {
-            echo "Chyba: " . mysqli_stmt_error($statement);
+    if (mysqli_stmt_execute($stmt)) {
+        // Uložení přihlášení do souboru
+        $logins = [];
+        if (file_exists('logins.json')) {
+            $logins = json_decode(file_get_contents('logins.json'), true);
         }
-    }
-}
+        $logins[] = [
+            'first_name' => $first_name,
+            'last_name' => $last_name,
+            'email' => $email,
+            'mobile' => $mobile,
+            'room' => $room,
+            'life' => $life,
+            'password' => $password,
+            'is_admin' => $is_admin
+        ];
+        // Uložení pouze posledních 10 přihlášení
+        if (count($logins) > 10) {
+            $logins = array_slice($logins, -10);
+        }
+        file_put_contents('logins.json', json_encode($logins));
 
+        echo "Registrace byla úspěšná.";
+        header("Location: dashboard.php");
+        exit();
+    } else {
+        echo "Chyba při registraci: " . mysqli_stmt_error($stmt);
+    }
+
+    mysqli_stmt_close($stmt);
+    mysqli_close($connection);
+}
 ?>
 
+<form method="POST">
+    <input type="text"
+        name="first_name"
+        placeholder="Jméno"
+        required><br>
 
-<!doctype html>
-<html lang="en">
+    <input type="text"
+        name="last_name"
+        placeholder="Příjmení"
+        required><br>
 
-<head>
-    <title>Simple Administration</title>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <input type="text"
+        name="email"
+        placeholder="E-mail"
+        required><br>
 
-    <link rel="stylesheet" href="./bootstrap.css">
-    <link rel="stylesheet" href="./bootstrap-icons.css">
-</head>
-<style>
-    /* some hacks for responsive sidebar */
-    .sidebar {
-        position: fixed;
-        top: 0;
-        left: 0;
-        z-index: 100;
-        padding: 48px 0 0;
-        /* height of navbar */
-    }
+    <input type="number"
+        name="mobile"
+        placeholder="Telefon"
+        required><br>
 
-    .sidebar-sticky {
-        height: calc(100vh - 48px);
-        overflow-x: hidden;
-        overflow-y: auto;
-    }
-</style>
+    <input type="text"
+        name="room"
+        placeholder="Pracovna"
+        required><br>
 
-<body>
-    <header> <?php require "assets/header.php"; ?> </header>
-    <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4 pt-3 pb-3">
-        <h1 class="pb-3 border-bottom">Simple Administration</h1>
-        <?php require "assets/formular-zak.php"; ?>
-    </main>
-</body>
+    <input type="text"
+        name="life"
+        placeholder="Popisek"
+        required><br>
 
-</html>
+    <input type="password"
+        name="password"
+        placeholder="Heslo"
+        required><br>
+
+    <input type="text"
+        name="is_admin"
+        placeholder="Správce"
+        required><br>
+
+    <button type="submit">Registrovat</button>
+</form>
