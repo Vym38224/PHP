@@ -1,4 +1,6 @@
 <?php
+session_start(); // Přidání session_start() na začátek souboru
+
 require "assets/database.php";
 $connection = connectionDB();
 
@@ -55,46 +57,63 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 }
 ?>
 
-<form method="POST">
-    <input type="text"
-        name="first_name"
-        placeholder="Jméno"
-        required><br>
+<!doctype html>
+<html lang="en">
 
-    <input type="text"
-        name="last_name"
-        placeholder="Příjmení"
-        required><br>
+<head>
+    <title>Registrace</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="./bootstrap.css">
+    <link rel="stylesheet" href="./bootstrap-icons.css">
+</head>
 
-    <input type="text"
-        name="email"
-        placeholder="E-mail"
-        required><br>
+<body>
+    <?php require_once("assets/header.php"); ?>
+    <div class="container col-md-9 ms-sm-auto col-lg-10 px-md-4 pt-3 pb-3">
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <h1 class="text-center mt-5">Přidat nového uživatele</h1>
+                <form method="POST" class="mt-4">
+                    <div class="mb-3">
+                        <label for="first_name" class="form-label">Jméno</label>
+                        <input type="text" name="first_name" id="first_name" class="form-control" placeholder="Jméno" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="last_name" class="form-label">Příjmení</label>
+                        <input type="text" name="last_name" id="last_name" class="form-control" placeholder="Příjmení" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="email" class="form-label">E-mail</label>
+                        <input type="email" name="email" id="email" class="form-control" placeholder="E-mail" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="mobile" class="form-label">Telefon</label>
+                        <input type="number" name="mobile" id="mobile" class="form-control" placeholder="Telefon" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="room" class="form-label">Pracovna</label>
+                        <input type="text" name="room" id="room" class="form-control" placeholder="Pracovna" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="life" class="form-label">Popisek</label>
+                        <input type="text" name="life" id="life" class="form-control" placeholder="Popisek" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="password" class="form-label">Heslo</label>
+                        <input type="password" name="password" id="password" class="form-control" placeholder="Heslo" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="is_admin" class="form-label">Správce</label>
+                        <input type="text" name="is_admin" id="is_admin" class="form-control" placeholder="Správce" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary w-100">Registrovat</button>
+                </form>
+            </div>
+        </div>
+    </div>
 
-    <input type="number"
-        name="mobile"
-        placeholder="Telefon"
-        required><br>
+    <script src="./bootstrap.bundle.js"></script>
+</body>
 
-    <input type="text"
-        name="room"
-        placeholder="Pracovna"
-        required><br>
-
-    <input type="text"
-        name="life"
-        placeholder="Popisek"
-        required><br>
-
-    <input type="password"
-        name="password"
-        placeholder="Heslo"
-        required><br>
-
-    <input type="text"
-        name="is_admin"
-        placeholder="Správce"
-        required><br>
-
-    <button type="submit">Registrovat</button>
-</form>
+</html>

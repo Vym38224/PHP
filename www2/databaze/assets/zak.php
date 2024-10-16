@@ -134,7 +134,7 @@ function getAllStudents($connection, $columns = "*")
 
 /**
  * 
- * Přidání žáka do databáze a přesměruje nás na profil žáka
+ * Přidání žáka do databáze a přesměruje nás na dashboard.php
  * 
  ** @param object $connection - napojení na databázi
  * @param string $first_name - jméno 

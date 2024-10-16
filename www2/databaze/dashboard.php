@@ -97,11 +97,10 @@ if (isset($_POST['delete_user'])) {
                             <td><?php echo htmlspecialchars($user["password"]); ?></td>
                             <td><?php echo htmlspecialchars($user["is_admin"]); ?></td>
                             <td>
-                                <form method="POST" style="display:inline;">
+                                <form method="POST">
                                     <input type="hidden" name="email" value="<?php echo htmlspecialchars($user["email"]); ?>">
                                     <button type="submit" name="delete_user" class="btn btn-danger">Smazat</button>
                                 </form>
-                            </td>
                         </tr>
                     <?php endforeach; ?>
                 </tbody>
