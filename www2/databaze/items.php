@@ -1,3 +1,14 @@
+<?php
+session_start();
+
+require "assets/database.php";
+require "assets/zak.php";
+$connection = connectionDB();
+
+// Vaše další kód pro stránku items
+
+?>
+
 <!doctype html>
 <html lang="en">
 
@@ -8,24 +19,28 @@
 
     <link rel="stylesheet" href="./bootstrap.css">
     <link rel="stylesheet" href="./bootstrap-icons.css">
-</head>
-<style>
-    /* some hacks for responsive sidebar */
-    .sidebar {
-        position: fixed;
-        top: 0;
-        left: 0;
-        z-index: 100;
-        padding: 48px 0 0;
-        /* height of navbar */
-    }
+    <style>
+        body {
+            padding-top: 50px;
+            /* Odsazení pro pevné záhlaví */
+        }
 
-    .sidebar-sticky {
-        height: calc(100vh - 48px);
-        overflow-x: hidden;
-        overflow-y: auto;
-    }
-</style>
+        .sidebar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 100;
+            padding: 48px 0 0;
+            /* height of navbar */
+        }
+
+        .sidebar-sticky {
+            height: calc(100vh - 48px);
+            overflow-x: hidden;
+            overflow-y: auto;
+        }
+    </style>
+</head>
 
 <body>
     <header> <?php require "assets/header.php"; ?> </header>

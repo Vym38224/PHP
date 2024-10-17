@@ -35,7 +35,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $is_admin = $_POST["is_admin"];
 
     updateStudent($connection, $first_name, $last_name, $email, $mobile, $room, $life, $password, $is_admin, $id);
-    header("Location: jeden-zak.php?id=$id");
+    header("Location: users.php?id=$id");
 }
 ?>
 
@@ -49,6 +49,21 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <link rel="stylesheet" href="./bootstrap.css">
     <link rel="stylesheet" href="./bootstrap-icons.css">
 </head>
+<style>
+    .sidebar {
+        position: fixed;
+        top: 0;
+        left: 0;
+        z-index: 100;
+        padding: 48px 0 0;
+    }
+
+    .sidebar-sticky {
+        height: calc(100vh - 48px);
+        overflow-x: hidden;
+        overflow-y: auto;
+    }
+</style>
 
 <body>
     <?php require_once("assets/header.php"); ?>

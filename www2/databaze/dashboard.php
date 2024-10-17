@@ -1,4 +1,5 @@
 <?php
+session_start();
 require "assets/database.php";
 require "assets/zak.php";
 $connection = connectionDB();
@@ -8,7 +9,6 @@ if (file_exists('logins.json')) {
     $last_logged_in_users = json_decode(file_get_contents('logins.json'), true);
 }
 
-session_start();
 
 if (!isset($_SESSION["username"])) {
     header("Location: login.php");
@@ -40,14 +40,17 @@ if (isset($_POST['delete_user'])) {
     <link rel="stylesheet" href="./bootstrap-icons.css">
 </head>
 <style>
-    /* some hacks for responsive sidebar */
+    body {
+        padding-top: 50px;
+        /* Odsazení pro pevné záhlaví */
+    }
+
     .sidebar {
         position: fixed;
         top: 0;
         left: 0;
         z-index: 100;
         padding: 48px 0 0;
-        /* height of navbar */
     }
 
     .sidebar-sticky {
@@ -58,20 +61,11 @@ if (isset($_POST['delete_user'])) {
 </style>
 
 <body>
-    <header>
-        <?php
-        $header_path = "assets/header.php";
-        if (file_exists($header_path)) {
-            require $header_path;
-        } else {
-            echo "<p>Chyba: Soubor záhlaví nebyl nalezen.</p>";
-        }
-        ?>
-    </header>
+    <header> <?php require "assets/header.php"; ?> </header>
     <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4 pt-3 pb-3">
         <h1 class="pb-3 border-bottom">Dashboard</h1>
         <section>
-            <h2 class="pb-3 border-bottom">Posledních 10 přihlášených uživatelů</h2>
+            <h2>Výpis posledních 10 přihlášených uživatelů</h2>
             <table class="table">
                 <thead>
                     <tr>
@@ -96,11 +90,7 @@ if (isset($_POST['delete_user'])) {
                             <td><?php echo htmlspecialchars($user["life"]); ?></td>
                             <td><?php echo htmlspecialchars($user["password"]); ?></td>
                             <td><?php echo htmlspecialchars($user["is_admin"]); ?></td>
-                            <td>
-                                <form method="POST">
-                                    <input type="hidden" name="email" value="<?php echo htmlspecialchars($user["email"]); ?>">
-                                    <button type="submit" name="delete_user" class="btn btn-danger">Smazat</button>
-                                </form>
+
                         </tr>
                     <?php endforeach; ?>
                 </tbody>

@@ -1,3 +1,15 @@
+<?php
+session_start();
+
+require "assets/database.php";
+require "assets/zak.php";
+$connection = connectionDB();
+
+// Vaše další kód pro stránku items
+
+?>
+
+
 <!doctype html>
 <html lang="en">
 
@@ -10,6 +22,11 @@
     <link rel="stylesheet" href="./bootstrap-icons.css">
 </head>
 <style>
+    body {
+        padding-top: 50px;
+        /* Odsazení pro pevné záhlaví */
+    }
+
     /* some hacks for responsive sidebar */
     .sidebar {
         position: fixed;

@@ -23,6 +23,11 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     <link rel="stylesheet" href="./bootstrap-icons.css">
 </head>
 <style>
+    body {
+        padding-top: 50px;
+        /* Odsazení pro pevné záhlaví */
+    }
+
     /* some hacks for responsive sidebar */
     .sidebar {
         position: fixed;

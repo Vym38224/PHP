@@ -1,5 +1,5 @@
 <?php
-session_start(); // Přidání session_start() na začátek souboru
+session_start();
 
 require "assets/database.php";
 $connection = connectionDB();
@@ -24,29 +24,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     mysqli_stmt_bind_param($stmt, "sssissss", $first_name, $last_name, $email, $mobile, $room, $life, $password, $is_admin);
 
     if (mysqli_stmt_execute($stmt)) {
-        // Uložení přihlášení do souboru
-        $logins = [];
-        if (file_exists('logins.json')) {
-            $logins = json_decode(file_get_contents('logins.json'), true);
-        }
-        $logins[] = [
-            'first_name' => $first_name,
-            'last_name' => $last_name,
-            'email' => $email,
-            'mobile' => $mobile,
-            'room' => $room,
-            'life' => $life,
-            'password' => $password,
-            'is_admin' => $is_admin
-        ];
-        // Uložení pouze posledních 10 přihlášení
-        if (count($logins) > 10) {
-            $logins = array_slice($logins, -10);
-        }
-        file_put_contents('logins.json', json_encode($logins));
-
-        echo "Registrace byla úspěšná.";
-        header("Location: dashboard.php");
+        header("Location: users.php");
         exit();
     } else {
         echo "Chyba při registraci: " . mysqli_stmt_error($stmt);
@@ -67,6 +45,21 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <link rel="stylesheet" href="./bootstrap.css">
     <link rel="stylesheet" href="./bootstrap-icons.css">
 </head>
+<style>
+    .sidebar {
+        position: fixed;
+        top: 0;
+        left: 0;
+        z-index: 100;
+        padding: 48px 0 0;
+    }
+
+    .sidebar-sticky {
+        height: calc(100vh - 48px);
+        overflow-x: hidden;
+        overflow-y: auto;
+    }
+</style>
 
 <body>
     <?php require_once("assets/header.php"); ?>
@@ -107,7 +100,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                         <label for="is_admin" class="form-label">Správce</label>
                         <input type="text" name="is_admin" id="is_admin" class="form-control" placeholder="Správce" required>
                     </div>
-                    <button type="submit" class="btn btn-primary w-100">Registrovat</button>
+                    <button type="submit" class="btn btn-primary w-100">Přidat</button>
                 </form>
             </div>
         </div>

@@ -10,6 +10,7 @@ require "assets/database.php";
 require "assets/zak.php";
 $connection = connectionDB();
 
+session_start(); // Inicializace session
 
 // Načtení informací o přihlášeném uživateli
 $username = $_SESSION["username"];
@@ -63,13 +64,15 @@ $students = getAllStudents($connection);
 <body>
     <header><?php require_once("assets/header.php"); ?></header>
     <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4 pt-3 pb-3">
+        <h1 class="pb-3 border-bottom">Users</h1>
         <section>
-            <h2 class="pb-3 border-bottom">Seznam uživatelů</h2>
+
             <p>Přihlášen jako: <?php echo htmlspecialchars($_SESSION["username"]); ?></p>
             <?php if ($is_admin && $_SESSION["username"] == $first_name): ?>
                 <button class="btn btn-primary" onclick="window.location.href='registrace-form.php'">Přidat uživatele</button>
             <?php endif; ?>
             <table class="table">
+                <h2> Výpis existujících uživatelů</h2>
                 <thead>
                     <tr>
                         <th>Jméno</th>
