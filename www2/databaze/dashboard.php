@@ -1,5 +1,11 @@
 <?php
 session_start();
+
+if (!isset($_SESSION["username"])) {
+    header("Location: login.php");
+    exit();
+}
+
 require "assets/database.php";
 require "assets/zak.php";
 $connection = connectionDB();
@@ -7,24 +13,12 @@ $connection = connectionDB();
 $last_logged_in_users = [];
 if (file_exists('logins.json')) {
     $last_logged_in_users = json_decode(file_get_contents('logins.json'), true);
-}
-
-
-if (!isset($_SESSION["username"])) {
-    header("Location: login.php");
-    exit();
-}
-
-// Smazání uživatele
-if (isset($_POST['delete_user'])) {
-    $email_to_delete = $_POST['email'];
-    $last_logged_in_users = array_filter($last_logged_in_users, function ($user) use ($email_to_delete) {
-        return $user['email'] !== $email_to_delete;
+    // Seřazení záznamů podle času přihlášení v sestupném pořadí
+    usort($last_logged_in_users, function ($a, $b) {
+        return strtotime($b['login_time']) - strtotime($a['login_time']);
     });
-    file_put_contents('logins.json', json_encode($last_logged_in_users));
-    header("Location: dashboard.php");
-    exit();
 }
+
 ?>
 
 
@@ -75,8 +69,8 @@ if (isset($_POST['delete_user'])) {
                         <th>Telefon</th>
                         <th>Pracovna</th>
                         <th>Popis</th>
-                        <th>Heslo</th>
                         <th>Je Správce</th>
+                        <th>Čas přihlášení</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -88,15 +82,13 @@ if (isset($_POST['delete_user'])) {
                             <td><?php echo htmlspecialchars($user["mobile"]); ?></td>
                             <td><?php echo htmlspecialchars($user["room"]); ?></td>
                             <td><?php echo htmlspecialchars($user["life"]); ?></td>
-                            <td><?php echo htmlspecialchars($user["password"]); ?></td>
                             <td><?php echo htmlspecialchars($user["is_admin"]); ?></td>
-
+                            <td><?php echo htmlspecialchars($user["login_time"]); ?></td>
                         </tr>
                     <?php endforeach; ?>
                 </tbody>
             </table>
         </section>
-
 
         <section class="mt-5">
             <h2>Simple form example</h2>
@@ -218,8 +210,7 @@ if (isset($_POST['delete_user'])) {
         </nav>
 
     </main>
-    </div>
-    </div>
+    <script src="./bootstrap.bundle.js"></script>
     <script src="./bootstrap.js"></script>
 </body>
 

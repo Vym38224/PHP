@@ -14,7 +14,7 @@ session_start(); // Inicializace session
 
 // Načtení informací o přihlášeném uživateli
 $username = $_SESSION["username"];
-$sql = "SELECT first_name, is_admin FROM student WHERE first_name = ?";
+$sql = "SELECT first_name, is_admin FROM student WHERE email = ?";
 $stmt = mysqli_prepare($connection, $sql);
 if ($stmt === false) {
     die("Chyba při přípravě dotazu: " . mysqli_error($connection));
@@ -32,6 +32,35 @@ $first_name = $user['first_name'];
 $is_admin = $user['is_admin'];
 
 $students = getAllStudents($connection);
+
+if ($_SERVER["REQUEST_METHOD"] == "POST" && $is_admin) {
+    $new_first_name = mysqli_real_escape_string($connection, $_POST["first_name"]);
+    $new_last_name = mysqli_real_escape_string($connection, $_POST["last_name"]);
+    $new_email = mysqli_real_escape_string($connection, $_POST["email"]);
+    $new_mobile = mysqli_real_escape_string($connection, $_POST["mobile"]);
+    $new_room = mysqli_real_escape_string($connection, $_POST["room"]);
+    $new_life = mysqli_real_escape_string($connection, $_POST["life"]);
+    $new_password = password_hash(mysqli_real_escape_string($connection, $_POST["password"]), PASSWORD_DEFAULT);
+    $new_is_admin = mysqli_real_escape_string($connection, $_POST["is_admin"]);
+
+    $sql = "INSERT INTO student (first_name, last_name, email, mobile, room, life, password, is_admin) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+    $stmt = mysqli_prepare($connection, $sql);
+
+    if ($stmt === false) {
+        die('Prepare failed: ' . mysqli_error($connection));
+    }
+
+    mysqli_stmt_bind_param($stmt, "sssissss", $new_first_name, $new_last_name, $new_email, $new_mobile, $new_room, $new_life, $new_password, $new_is_admin);
+
+    if (mysqli_stmt_execute($stmt)) {
+        header("Location: users.php");
+        exit();
+    } else {
+        echo "Chyba při přidávání uživatele: " . mysqli_stmt_error($stmt);
+    }
+
+    mysqli_stmt_close($stmt);
+}
 ?>
 
 <!doctype html>
@@ -68,7 +97,7 @@ $students = getAllStudents($connection);
         <section>
 
             <p>Přihlášen jako: <?php echo htmlspecialchars($_SESSION["username"]); ?></p>
-            <?php if ($is_admin && $_SESSION["username"] == $first_name): ?>
+            <?php if ($is_admin): ?>
                 <button class="btn btn-primary" onclick="window.location.href='registrace-form.php'">Přidat uživatele</button>
             <?php endif; ?>
             <table class="table">
@@ -83,7 +112,7 @@ $students = getAllStudents($connection);
                         <th>Popis</th>
                         <th>Heslo</th>
                         <th>Je Správce</th>
-                        <?php if ($is_admin && $_SESSION["username"] == $first_name): ?>
+                        <?php if ($is_admin): ?>
                             <th>Akce</th>
                         <?php endif; ?>
                     </tr>
@@ -99,7 +128,7 @@ $students = getAllStudents($connection);
                             <td><?php echo htmlspecialchars($student["life"]); ?></td>
                             <td><?php echo htmlspecialchars($student["password"]); ?></td>
                             <td><?php echo htmlspecialchars($student["is_admin"]); ?></td>
-                            <?php if ($is_admin && $_SESSION["username"] == $first_name): ?>
+                            <?php if ($is_admin): ?>
                                 <td>
                                     <a href="editace-zaka.php?id=<?php echo $student['id']; ?>" class="btn btn-primary">Editovat</a>
                                     <a href="delete-zak.php?id=<?php echo $student['id']; ?>" class="btn btn-danger">Odstranit</a>
