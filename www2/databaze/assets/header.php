@@ -1,6 +1,6 @@
 <?php
 // Získání aktuální URL
-$current_page = basename($_SERVER['REQUEST_URI']);
+$current_page = isset($_GET['url']) ? $_GET['url'] : 'dashboard/index';
 ?>
 
 <header>
@@ -17,11 +17,11 @@ $current_page = basename($_SERVER['REQUEST_URI']);
                             <span class="nav-link">Přihlášen jako: <?php echo htmlspecialchars($_SESSION["username"]); ?></span>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="logout.php">Odhlásit se</a>
+                            <a class="nav-link" href="index.php?url=login/logout">Odhlásit se</a>
                         </li>
                     <?php else: ?>
                         <li class="nav-item">
-                            <a class="nav-link" href="login.php">Přihlásit se</a>
+                            <a class="nav-link" href="index.php?url=login/index">Přihlásit se</a>
                         </li>
                     <?php endif; ?>
                 </ul>
@@ -36,7 +36,7 @@ $current_page = basename($_SERVER['REQUEST_URI']);
             <div class="position-sticky pt-3 sidebar-sticky">
                 <ul class="nav flex-column">
                     <li class="nav-item">
-                        <a href="dashboard.php" class="nav-link link-dark <?php echo $current_page == 'dashboard.php' ? 'active' : ''; ?>">
+                        <a href="index.php?url=dashboard/index" class="nav-link link-dark <?php echo $current_page == 'dashboard/index' ? 'active' : ''; ?>">
                             <span class="icon">
                                 <i class="bi bi-easel"></i>
                             </span>
@@ -44,7 +44,7 @@ $current_page = basename($_SERVER['REQUEST_URI']);
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a href="items.php" class="nav-link link-dark <?php echo $current_page == 'items.php' ? 'active' : ''; ?>">
+                        <a href="index.php?url=items/index" class="nav-link link-dark <?php echo $current_page == 'items/index' ? 'active' : ''; ?>">
                             <span class="icon">
                                 <i class="bi bi-card-list"></i>
                             </span>
@@ -52,7 +52,7 @@ $current_page = basename($_SERVER['REQUEST_URI']);
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a href="others.php" class="nav-link link-dark <?php echo $current_page == 'others.php' ? 'active' : ''; ?>">
+                        <a href="index.php?url=others/index" class="nav-link link-dark <?php echo $current_page == 'others/index' ? 'active' : ''; ?>">
                             <span class="icon">
                                 <i class="bi bi-box"></i>
                             </span>
@@ -60,7 +60,7 @@ $current_page = basename($_SERVER['REQUEST_URI']);
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a href="users.php" class="nav-link link-dark <?php echo $current_page == 'users.php' ? 'active' : ''; ?>">
+                        <a href="index.php?url=user/index" class="nav-link link-dark <?php echo $current_page == 'user/index' ? 'active' : ''; ?>">
                             <span class="icon">
                                 <i class="bi bi-people"></i>
                             </span>

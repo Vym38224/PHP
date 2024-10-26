@@ -1,13 +1,33 @@
 <?php
-// Získání cesty z URL
-$path = isset($_GET['path']) ? $_GET['path'] : '';
+session_start();
 
-// Kontrola, zda soubor existuje
-if ($path && file_exists($path . '.php')) {
-    require $path . '.php';
+require_once "controllers/UserController.php";
+require_once "controllers/LoginController.php";
+require_once "controllers/DashboardController.php";
+require_once "controllers/ItemsController.php";
+require_once "controllers/OthersController.php";
+
+$url = isset($_GET['url']) ? $_GET['url'] : 'dashboard/index';
+$url = rtrim($url, '/');
+$url = explode('/', $url);
+
+$controller = ucfirst($url[0]) . 'Controller';
+$action = isset($url[1]) ? $url[1] : 'index';
+
+// Kontrola přihlášení
+if (!isset($_SESSION['username']) && $controller !== 'LoginController') {
+    header("Location: index.php?url=login/index");
+    exit();
+}
+
+if (file_exists("controllers/$controller.php")) {
+    require_once "controllers/$controller.php";
+    $controllerInstance = new $controller();
+    if (method_exists($controllerInstance, $action)) {
+        $controllerInstance->$action();
+    } else {
+        require "views/404.php";
+    }
 } else {
-    // Zobrazení chybové stránky 404
-    http_response_code(404);
-    echo "<h1>404 Not Found</h1>";
-    echo "<p>Stránka, kterou hledáte, neexistuje.</p>";
+    require "views/404.php";
 }
