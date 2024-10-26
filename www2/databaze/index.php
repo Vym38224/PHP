@@ -31,16 +31,3 @@ if (file_exists("controllers/$controller.php")) {
 } else {
     require "views/404.php";
 }
-
-
-require_once 'autoload.php';
-
-$rc = new routerController();
-$router = "";
-if ($_GET) {
-    if (isset($_GET["url"])) {
-        $url = $_GET["url"];
-        $rc->process(array($url));
-        $rc->renderView();
-    }
-}
