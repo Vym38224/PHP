@@ -1,118 +1,72 @@
 <?php
 session_start();
 
-define('USER_FILE', 'users.json');
+require_once 'autoload.php';
+require_once 'controllers/RouterController.php';
+require_once 'models/User.php';
 
-function loadUsers()
-{
-    if (file_exists(USER_FILE)) {
-        $json = file_get_contents(USER_FILE);
-        return json_decode($json, true);
+$rc = new routerController();
+$router = "";
+if ($_GET) {
+    if (isset($_GET["url"])) {
+        $url = $_GET["url"];
+        $rc->process(array($url));
+        $rc->renderView();
     }
-    return [];
 }
 
-function saveUsers($users)
-{
-    $json = json_encode($users, JSON_PRETTY_PRINT);
-    file_put_contents(USER_FILE, $json);
-}
+require_once 'autoload.php';
 
-function getUsers()
-{
-    $users = loadUsers();
-    $csv = "id,name,surname\n";
-    foreach ($users as $user) {
-        $csv .= "{$user['id']},{$user['name']},{$user['surname']}\n";
-    }
-    return $csv;
-}
-
-function getUserById($id)
-{
-    $users = loadUsers();
-    foreach ($users as $user) {
-        if ($user['id'] == $id) {
-            return "{$user['id']},{$user['name']},{$user['surname']}\n";
-        }
-    }
-    return "User not found\n";
-}
-
-function addUser($id, $name, $surname)
-{
-    $users = loadUsers();
-    $users[] = ['id' => $id, 'name' => $name, 'surname' => $surname];
-    saveUsers($users);
-    return "User added\n";
-}
-
-function updateUser($id, $name, $surname)
-{
-    $users = loadUsers();
-    foreach ($users as &$user) {
-        if ($user['id'] == $id) {
-            $user['name'] = $name;
-            $user['surname'] = $surname;
-            saveUsers($users);
-            return "User updated\n";
-        }
-    }
-    return "User not found\n";
-}
-
-function deleteUser($id)
-{
-    $users = loadUsers();
-    foreach ($users as $key => $user) {
-        if ($user['id'] == $id) {
-            unset($users[$key]);
-            saveUsers($users);
-            return "User deleted\n";
-        }
-    }
-    return "User not found\n";
-}
+$userModel = new User();
 
 $method = $_SERVER['REQUEST_METHOD'];
 $path = isset($_GET['path']) ? explode('/', trim($_GET['path'], '/')) : [];
 
-header('Content-Type: text/plain');
+header('Content-Type: application/json');
 
 switch ($method) {
     case 'GET':
         if (empty($path)) {
-            echo getUsers();
+            echo json_encode($userModel->getAllUsers());
         } elseif (count($path) == 2 && $path[0] == 'get') {
-            echo getUserById($path[1]);
+            echo json_encode($userModel->getUserById($path[1]));
         } else {
-            echo "Invalid endpoint\n";
+            echo json_encode(["error" => "Invalid endpoint"]);
         }
         break;
     case 'POST':
         if (empty($path)) {
-            $id = $_POST['id'];
-            $name = $_POST['name'];
-            $surname = $_POST['surname'];
-            echo addUser($id, $name, $surname);
+            $first_name = $_POST['first_name'];
+            $last_name = $_POST['last_name'];
+            $email = $_POST['email'];
+            $mobile = $_POST['mobile'];
+            $room = $_POST['room'];
+            $life = $_POST['life'];
+            $is_admin = $_POST['is_admin'];
+            echo json_encode(["success" => $userModel->addUser($first_name, $last_name, $email, $mobile, $room, $life, $is_admin)]);
         } elseif (count($path) == 2 && $path[0] == 'update') {
             $id = $path[1];
-            $name = $_POST['name'];
-            $surname = $_POST['surname'];
-            echo updateUser($id, $name, $surname);
+            $first_name = $_POST['first_name'];
+            $last_name = $_POST['last_name'];
+            $email = $_POST['email'];
+            $mobile = $_POST['mobile'];
+            $room = $_POST['room'];
+            $life = $_POST['life'];
+            $is_admin = $_POST['is_admin'];
+            echo json_encode(["success" => $userModel->updateUser($id, $first_name, $last_name, $email, $mobile, $room, $life, $is_admin)]);
         } else {
-            echo "Invalid endpoint\n";
+            echo json_encode(["error" => "Invalid endpoint"]);
         }
         break;
     case 'DELETE':
         if (count($path) == 2 && $path[0] == 'delete') {
             $id = $path[1];
-            echo deleteUser($id);
+            echo json_encode(["success" => $userModel->deleteUser($id)]);
         } else {
-            echo "Invalid endpoint\n";
+            echo json_encode(["error" => "Invalid endpoint"]);
         }
         break;
     default:
-        echo "Invalid request method\n";
+        echo json_encode(["error" => "Invalid request method"]);
         break;
 }

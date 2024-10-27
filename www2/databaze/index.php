@@ -6,6 +6,7 @@ require_once "controllers/LoginController.php";
 require_once "controllers/DashboardController.php";
 require_once "controllers/ItemsController.php";
 require_once "controllers/OthersController.php";
+require_once "controllers/RouterController.php";
 
 $url = isset($_GET['url']) ? $_GET['url'] : 'dashboard/index';
 $url = rtrim($url, '/');
@@ -30,4 +31,17 @@ if (file_exists("controllers/$controller.php")) {
     }
 } else {
     require "views/404.php";
+}
+
+
+require_once 'autoload.php';
+
+$rc = new routerController();
+if ($_GET) {
+    if (isset($_GET["url"])) {
+        $url = $_GET["url"];
+        $rc->process(array($url));
+    }
+} else {
+    require "views/login/index.php";
 }

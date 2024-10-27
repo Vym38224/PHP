@@ -7,9 +7,4 @@ class routerController
     {
         $this->url = $params[0];
     }
-
-    public function renderView()
-    {
-        echo "Processing URL: " . $this->url;
-    }
 }

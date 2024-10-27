@@ -42,7 +42,7 @@
 <body>
     <header><?php require "assets/header.php"; ?></header>
     <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4 pt-3 pb-3 main-content">
-        <h1 class="pb-3 border-bottom">Uživatelé</h1>
+        <h1 class="pb-3 border-bottom">Users</h1>
         <section>
             <h2 class="pb-3 border-bottom">Seznam uživatelů</h2>
             <?php if (isset($_SESSION['is_admin']) && $_SESSION['is_admin'] == 1): ?>
