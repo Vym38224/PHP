@@ -61,6 +61,16 @@ class User
         return mysqli_stmt_execute($stmt);
     }
 
+
+    public function deleteUserById($id)
+    {
+        $sql = "DELETE FROM student WHERE id = ?";
+        $stmt = mysqli_prepare($this->connection, $sql);
+        mysqli_stmt_bind_param($stmt, "i", $id);
+        return mysqli_stmt_execute($stmt);
+    }
+
+
     public function getLastLoggedInUsers()
     {
         if (file_exists('logins.json')) {
