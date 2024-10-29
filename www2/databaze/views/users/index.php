@@ -76,7 +76,7 @@
                             <td>
                                 <?php if (isset($_SESSION['is_admin']) && $_SESSION['is_admin'] == 1): ?>
                                     <a href="index.php?url=user/edit&id=<?php echo $user['id']; ?>" class="btn btn-warning">Editovat</a>
-                                    <a href="index.php?url=user/delete&id=<?php echo $user['id']; ?>" class="btn btn-danger">Odstranit</a>
+                                    <button type="button" class="btn btn-danger deleteButton" data-id="<?php echo htmlspecialchars($user['id']); ?>">Odstranit</button>
                                 <?php endif; ?>
                             </td>
                         </tr>
@@ -87,6 +87,9 @@
     </main>
 
     <script src="bootstrap.bundle.js"></script>
+    <script src="js/delete_user_button.js"></script>
+
+
 </body>
 
 </html>

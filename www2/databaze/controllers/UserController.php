@@ -27,7 +27,15 @@ class UserController
             $life = $_POST["life"];
             $password = $_POST["password"];
             $is_admin = $_POST["is_admin"];
-            $this->userModel->addUser($first_name, $last_name, $email, $mobile, $room, $life, $password, $is_admin);
+
+            // Zpracování hesla
+            if (!empty($password)) {
+                $hashed_password = password_hash($password, PASSWORD_DEFAULT);
+            } else {
+                $hashed_password = null;
+            }
+
+            $this->userModel->addUser($first_name, $last_name, $email, $mobile, $room, $life, $hashed_password, $is_admin);
             header("Location: index.php?url=user/index");
         } else {
             require "views/users/add.php";
@@ -45,7 +53,16 @@ class UserController
             $room = $_POST["room"];
             $life = $_POST["life"];
             $is_admin = $_POST["is_admin"];
-            $this->userModel->updateUser($id, $first_name, $last_name, $email, $mobile, $room, $life, $is_admin);
+            $password = $_POST["password"];
+
+            // Zpracování hesla
+            if (!empty($password)) {
+                $hashed_password = password_hash($password, PASSWORD_DEFAULT);
+                $this->userModel->updateUserWithPassword($id, $first_name, $last_name, $email, $mobile, $room, $life, $hashed_password, $is_admin);
+            } else {
+                $this->userModel->updateUser($id, $first_name, $last_name, $email, $mobile, $room, $life, $is_admin);
+            }
+
             header("Location: index.php?url=user/index");
         } else {
             $id = $_GET["id"];

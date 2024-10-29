@@ -37,11 +37,18 @@ class User
         return mysqli_fetch_assoc($result);
     }
 
-    public function addUser($first_name, $last_name, $email, $mobile, $room, $life, $is_admin)
+    public function addUser($first_name, $last_name, $email, $mobile, $room, $life, $password, $is_admin)
     {
-        $sql = "INSERT INTO student (first_name, last_name, email, mobile, room, life, is_admin) VALUES (?, ?, ?, ?, ?, ?, ?)";
+        // Zpracování hesla
+        if (!empty($password)) {
+            $hashed_password = password_hash($password, PASSWORD_DEFAULT);
+        } else {
+            $hashed_password = null;
+        }
+
+        $sql = "INSERT INTO student (first_name, last_name, email, mobile, room, life, password, is_admin) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
         $stmt = mysqli_prepare($this->connection, $sql);
-        mysqli_stmt_bind_param($stmt, "ssssssi", $first_name, $last_name, $email, $mobile, $room, $life, $is_admin);
+        mysqli_stmt_bind_param($stmt, "sssssssi", $first_name, $last_name, $email, $mobile, $room, $life, $hashed_password, $is_admin);
         return mysqli_stmt_execute($stmt);
     }
 
@@ -50,6 +57,14 @@ class User
         $sql = "UPDATE student SET first_name = ?, last_name = ?, email = ?, mobile = ?, room = ?, life = ?, is_admin = ? WHERE id = ?";
         $stmt = mysqli_prepare($this->connection, $sql);
         mysqli_stmt_bind_param($stmt, "ssssssii", $first_name, $last_name, $email, $mobile, $room, $life, $is_admin, $id);
+        return mysqli_stmt_execute($stmt);
+    }
+
+    public function updateUserWithPassword($id, $first_name, $last_name, $email, $mobile, $room, $life, $password, $is_admin)
+    {
+        $sql = "UPDATE student SET first_name = ?, last_name = ?, email = ?, mobile = ?, room = ?, life = ?, password = ?, is_admin = ? WHERE id = ?";
+        $stmt = mysqli_prepare($this->connection, $sql);
+        mysqli_stmt_bind_param($stmt, "ssssssssi", $first_name, $last_name, $email, $mobile, $room, $life, $password, $is_admin, $id);
         return mysqli_stmt_execute($stmt);
     }
 

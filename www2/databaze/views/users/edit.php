@@ -70,6 +70,10 @@
                 <input type="text" name="life" id="life" class="form-control" value="<?php echo htmlspecialchars($user['life']); ?>" required>
             </div>
             <div class="mb-3">
+                <label for="password" class="form-label">Heslo:</label>
+                <input type="password" name="password" id="password" class="form-control" value="<?php echo htmlspecialchars($user['password']); ?>" required>
+            </div>
+            <div class="mb-3">
                 <label for="is_admin" class="form-label">Správce</label>
                 <input type="text" name="is_admin" id="is_admin" class="form-control" value="<?php echo htmlspecialchars($user['is_admin']); ?>" required>
             </div>
