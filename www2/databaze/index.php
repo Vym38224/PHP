@@ -20,10 +20,7 @@ function saveUsers($users)
 function getAllUsers()
 {
     $users = loadUsers();
-    header('Content-Type: text/csv');
-    foreach ($users as $user) {
-        echo implode(',', $user) . "\n";
-    }
+    echo json_encode($users);
 }
 
 function getUserById($id)
@@ -40,12 +37,13 @@ function getUserById($id)
     echo "User not found";
 }
 
-function saveUser($id, $name, $surname)
+function addUser($name, $surname)
 {
     $users = loadUsers();
+    $id = end($users)['id'] + 1;
     $users[] = ['id' => $id, 'name' => $name, 'surname' => $surname];
     saveUsers($users);
-    echo "User saved";
+    echo "User added successfully";
 }
 
 function updateUser($id, $name, $surname)
@@ -56,7 +54,7 @@ function updateUser($id, $name, $surname)
             $user['name'] = $name;
             $user['surname'] = $surname;
             saveUsers($users);
-            echo "User updated";
+            echo "User updated successfully";
             return;
         }
     }
@@ -71,7 +69,7 @@ function deleteUser($id)
         if ($user['id'] == $id) {
             unset($users[$key]);
             saveUsers($users);
-            echo "User deleted";
+            echo "User deleted successfully";
             return;
         }
     }
@@ -79,45 +77,20 @@ function deleteUser($id)
     echo "User not found";
 }
 
-$url = isset($_GET['url']) ? $_GET['url'] : '';
-$url = rtrim($url, '/');
-$url = explode('/', $url);
-
-$method = $_SERVER['REQUEST_METHOD'];
-
-switch ($method) {
-    case 'GET':
-        if (count($url) == 1 && $url[0] == 'get') {
-            getAllUsers();
-        } elseif (count($url) == 2 && $url[0] == 'get') {
-            getUserById($url[1]);
-        } else {
-            http_response_code(404);
-            echo "Invalid endpoint";
-        }
-        break;
-    case 'POST':
-        if (count($url) == 1 && $url[0] == 'post') {
-            saveUser($_POST['id'], $_POST['name'], $_POST['surname']);
-        } elseif (count($url) == 2 && $url[0] == 'update') {
-            updateUser($url[1], $_POST['name'], $_POST['surname']);
-        } else {
-            http_response_code(404);
-            echo "Invalid endpoint";
-        }
-        break;
-    case 'DELETE':
-        if (count($url) == 2 && $url[0] == 'delete') {
-            deleteUser($url[1]);
-        } else {
-            http_response_code(404);
-            echo "Invalid endpoint";
-        }
-        break;
-    default:
-        http_response_code(405);
-        echo "Method not allowed";
-        break;
+if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['action'])) {
+    if ($_GET['action'] === 'get') {
+        getAllUsers();
+    } elseif ($_GET['action'] === 'getById' && isset($_GET['id'])) {
+        getUserById($_GET['id']);
+    }
+} elseif ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
+    if ($_POST['action'] === 'add' && isset($_POST['name']) && isset($_POST['surname'])) {
+        addUser($_POST['name'], $_POST['surname']);
+    } elseif ($_POST['action'] === 'update' && isset($_POST['id']) && isset($_POST['name']) && isset($_POST['surname'])) {
+        updateUser($_POST['id'], $_POST['name'], $_POST['surname']);
+    } elseif ($_POST['action'] === 'delete' && isset($_POST['id'])) {
+        deleteUser($_POST['id']);
+    }
 }
 
 require_once "controllers/UserController.php";
