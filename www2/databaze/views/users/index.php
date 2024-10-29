@@ -84,9 +84,12 @@
                 </tbody>
             </table>
         </section>
+        <div id="successAlert" class="alert alert-success d-none" role="alert">
+            Uživatel byl úspěšně přidán!
+        </div>
     </main>
 
-    <script src="bootstrap.bundle.js"></script>
+    <script src="js/add_notification.js"></script>
     <script src="js/delete_user_button.js"></script>
 
 

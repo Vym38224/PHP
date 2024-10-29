@@ -36,7 +36,7 @@ class UserController
             }
 
             $this->userModel->addUser($first_name, $last_name, $email, $mobile, $room, $life, $hashed_password, $is_admin);
-            header("Location: index.php?url=user/index");
+            header("Location: index.php?url=user/index&success=true");
         } else {
             require "views/users/add.php";
         }

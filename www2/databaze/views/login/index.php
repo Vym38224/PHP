@@ -19,18 +19,17 @@
                         <?php echo htmlspecialchars($error); ?>
                     </div>
                 <?php endif; ?>
-                <form method="POST" action="index.php?url=login/authenticate" class="mt-4">
+                <form id="loginForm" method="POST" action="index.php?url=login/authenticate" class="mt-4">
                     <div class="mb-3">
-                        <label for="email" class="form-label">E-mail</label>
-                        <input type="email" name="email" id="email" class="form-control" placeholder="E-mail" required>
+                        <label for="email" class="form-label">Email</label>
+                        <input type="email" class="form-control" id="email" name="email" required>
                     </div>
                     <button type="submit" class="btn btn-primary w-100">Přihlásit se</button>
                 </form>
             </div>
         </div>
     </div>
-
-    <script src="bootstrap.bundle.js"></script>
+    <script src="js/valid_user.js"></script>
 </body>
 
 </html>

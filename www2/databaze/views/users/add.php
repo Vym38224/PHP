@@ -79,8 +79,6 @@
             <button type="submit" class="btn btn-primary w-100">Přidat uživatele</button>
         </form>
     </main>
-
-    <script src="bootstrap.bundle.js"></script>
 </body>
 
 </html>
