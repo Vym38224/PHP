@@ -69,8 +69,10 @@
                 <input type="text" name="life" id="life" class="form-control" placeholder="Popisek" required>
             </div>
             <div class="mb-3">
+                <!-- heslo musí obsahovat více než 6 znaků a nesmí být prázdné využí javascript fce z js/valid_user.js-->
                 <label for="password" class="form-label">Heslo</label>
                 <input type="password" name="password" id="password" class="form-control" placeholder="Heslo" required>
+
             </div>
             <div class="mb-3">
                 <label for="is_admin" class="form-label">Správce</label>
@@ -80,5 +82,6 @@
         </form>
     </main>
 </body>
+<script src="js/valid_user.js"></script>
 
 </html>

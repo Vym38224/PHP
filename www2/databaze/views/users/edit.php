@@ -80,8 +80,7 @@
             <button type="submit" class="btn btn-primary w-100">Upravit uživatele</button>
         </form>
     </main>
-
-    <script src="bootstrap.bundle.js"></script>
+    <script src="js/valid_user.js"></script>
 </body>
 
 </html>
