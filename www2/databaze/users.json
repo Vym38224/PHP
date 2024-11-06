@@ -1,1 +1,17 @@
-[]
+[
+    {
+        "id": "672b5eaa9eb4c",
+        "name": "jaroslav",
+        "surname": "vymetal"
+    },
+    {
+        "id": "672b5f6ccee05",
+        "name": "Harry",
+        "surname": "Potter"
+    },
+    {
+        "id": "672b5fc7d33f1",
+        "name": "Daniel",
+        "surname": "Nekonecny"
+    }
+]
