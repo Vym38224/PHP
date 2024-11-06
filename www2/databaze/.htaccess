@@ -1,2 +1,4 @@
 RewriteEngine On
 RewriteRule ^([^.]*)$ index.php?url=$1 [L,QSA]
+
+Header add Access-Control-Allow-Origin "*"
