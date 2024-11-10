@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="cs">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>React Panel Komponenta</title>
+    <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <style>
+        #root {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .panel {
+            margin: 10px;
+            display: flex;
+            flex-wrap: wrap;
+            border-radius: 10px;
+        }
+
+        .panel.shadow {
+            box-shadow: 3px 3px 0px rgb(0 0 0 / 15%);
+        }
+
+        .button {
+            padding: 10px;
+            border: none;
+            cursor: pointer;
+            display: inline-block;
+        }
+
+        .panel .button:first-child {
+            border-top-left-radius: 10px;
+            border-bottom-left-radius: 10px;
+        }
+
+        .panel .button:last-child {
+            border-top-right-radius: 10px;
+            border-bottom-right-radius: 10px;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="root"></div>
+    <script type="text/babel">
+        const { useState } = React;
+
+        function Panel({ buttons, shadow, className }) {
+            return (
+                <div className={`panel ${shadow ? 'shadow' : ''} ${className}`}>
+                    {buttons.map((button, index) => (
+                        <button
+                            key={index}
+                            className="button"
+                            style={{
+                                backgroundColor: button.color,
+                                color: button.text === "info" ? '#fff' : (button.inverse ? '#000' : '#fff'), // Nastavení bílé barvy textu pro tlačítko "info"
+                                border: `1px solid ${button.color}`
+                            }}
+                        >
+                            {button.text}
+                        </button>
+                    ))}
+                </div>
+            );
+        }
+
+        const buttons = [
+            { text: "add", color: "#eee", inverse: true },
+            { text: "edit", color: "#eee", inverse: true },
+            { text: "delete", color: "#FF5733" }
+        ];
+
+        const buttons2 = [
+            { text: "a", color: "#34eb8f", inverse: true },
+            { text: "b", color: "#1f8753" },
+            { text: "c", color: "#34eb8f", inverse: true },
+            { text: "d", color: "#1f8753" },
+            { text: "e", color: "#34eb8f", inverse: true }
+        ];
+
+        const buttons3 = [
+            { text: "info", color: "#349beb", inverse: true }
+        ];
+
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(
+            <>
+                <Panel buttons={buttons} className="shadow" />
+                <Panel buttons={buttons} />
+                <Panel buttons={buttons2} />
+                <Panel buttons={buttons3} />
+                <Panel buttons={buttons3} className="shadow" />
+            </>
+        );
+    </script>
+</body>
+
+</html>
