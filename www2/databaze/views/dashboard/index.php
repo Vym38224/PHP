@@ -44,38 +44,21 @@
     <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4 pt-3 pb-3 main-content">
         <h1 class="pb-3 border-bottom">Dashboard</h1>
         <section>
-            <h2>Výpis posledních 10 přihlášených uživatelů</h2>
-            <table class="table">
-                <thead>
-                    <tr>
-                        <th>Jméno</th>
-                        <th>Příjmení</th>
-                        <th>E-mail</th>
-                        <th>Telefon</th>
-                        <th>Pracovna</th>
-                        <th>Popis</th>
-                        <th>Je Správce</th>
-                        <th>Čas přihlášení</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <?php foreach ($last_logged_in_users as $user): ?>
-                        <tr>
-                            <td><?php echo htmlspecialchars($user["first_name"]); ?></td>
-                            <td><?php echo htmlspecialchars($user["last_name"]); ?></td>
-                            <td><?php echo htmlspecialchars($user["email"]); ?></td>
-                            <td><?php echo htmlspecialchars($user["mobile"]); ?></td>
-                            <td><?php echo htmlspecialchars($user["room"]); ?></td>
-                            <td><?php echo htmlspecialchars($user["life"]); ?></td>
-                            <td><?php echo htmlspecialchars($user["is_admin"]); ?></td>
-                            <td><?php echo htmlspecialchars($user["login_time"]); ?></td>
-                        </tr>
-                    <?php endforeach; ?>
-                </tbody>
-            </table>
+            <h2>Výpis přihlášených uživatelů</h2>
+            <div id="root"></div>
         </section>
     </main>
 
+    <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <script type="text/babel" src="views/components/LogTable.js"></script>
+    <script type="text/babel">
+        const logs = <?php echo json_encode($last_logged_in_users); ?>;
+
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(<LogTable logs={logs} />);
+    </script>
 </body>
 
 </html>
