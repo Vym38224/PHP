@@ -73,13 +73,25 @@ class UserController
 
     public function delete()
     {
-        if ($_SERVER["REQUEST_METHOD"] == "POST") {
-            $id = $_POST["id"];
-            $this->userModel->deleteUserById($id);
-            header("Location: index.php?url=user/index");
-        } else {
-            $id = $_GET["id"];
-            require "views/users/delete.php";
+        if ($_SERVER['REQUEST_METHOD'] === 'DELETE') {
+            parse_str(file_get_contents("php://input"), $_DELETE);
+            $userId = $_DELETE['id'] ?? null;
+
+            if ($userId === null) {
+                header('Content-Type: application/json');
+                echo json_encode(['success' => false, 'message' => 'User ID is missing']);
+                exit;
+            }
+
+            $result = $this->userModel->deleteUserById($userId);
+
+            header('Content-Type: application/json');
+            if ($result) {
+                echo json_encode(['success' => true]);
+            } else {
+                echo json_encode(['success' => false, 'message' => 'Failed to delete user']);
+            }
+            exit;
         }
     }
 }
