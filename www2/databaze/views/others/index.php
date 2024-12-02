@@ -50,7 +50,7 @@
     <script>
         $(document).ready(function() {
             $.ajax({
-                url: './users.json',
+                url: './users.json?' + new Date().getTime(),
                 method: 'GET',
                 dataType: 'json',
                 success: function(data) {

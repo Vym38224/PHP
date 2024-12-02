@@ -1,4 +1,3 @@
-
 const { useState, useEffect } = React;
 
 function LogTable({ logs }) {
@@ -11,14 +10,31 @@ function LogTable({ logs }) {
         setVisibleLogs(filteredLogs);
     }, [logs]);
 
-    const handleDelete = (index) => {
-        const logToDelete = visibleLogs[index];
-        const newLogs = visibleLogs.filter((_, i) => i !== index);
+    const handleDelete = async (logId) => {
+        const logToDelete = visibleLogs.find(log => log.id === logId);
+        const newLogs = visibleLogs.filter(log => log.id !== logId);
         setVisibleLogs(newLogs);
 
         const deletedLogs = JSON.parse(localStorage.getItem('deletedLogs')) || [];
         deletedLogs.push(logToDelete.id);
         localStorage.setItem('deletedLogs', JSON.stringify(deletedLogs));
+
+        // Make an API call to delete the log entry on the server
+        try {
+            const response = await fetch('http://localhost/www2/databaze/controllers/LoginController.php/api/delete-log', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ loginTime: logToDelete.login_time }),
+            });
+
+            if (!response.ok) {
+                throw new Error('Failed to delete log entry on the server');
+            }
+        } catch (error) {
+            console.error('Error:', error);
+        }
     };
 
     const handleLogCountChange = (event) => {
@@ -26,22 +42,22 @@ function LogTable({ logs }) {
     };
 
     return (
-        <div>
-            <div>
+        <div style={styles.container}>
+            <div style={styles.control}>
                 <label>
                     Počet zobrazených logů:
                     <input
                         type="number"
                         value={logCount}
                         onChange={handleLogCountChange}
-                        min="1"
-                        max={logs.length}
+                        style={styles.input}
                     />
                 </label>
             </div>
-            <table className="table">
+            <table style={styles.table}>
                 <thead>
                     <tr>
+                        <th>Login Time</th>
                         <th>Jméno</th>
                         <th>Příjmení</th>
                         <th>E-mail</th>
@@ -49,23 +65,22 @@ function LogTable({ logs }) {
                         <th>Pracovna</th>
                         <th>Popis</th>
                         <th>Je Správce</th>
-                        <th>Čas přihlášení</th>
                         <th>Akce</th>
                     </tr>
                 </thead>
                 <tbody>
-                    {visibleLogs.slice(0, logCount).map((log, index) => (
-                        <tr key={index}>
+                    {visibleLogs.slice(0, logCount).map((log) => (
+                        <tr key={log.id} style={styles.row}>
+                            <td>{log.login_time}</td>
                             <td>{log.first_name}</td>
                             <td>{log.last_name}</td>
                             <td>{log.email}</td>
                             <td>{log.mobile}</td>
                             <td>{log.room}</td>
                             <td>{log.life}</td>
-                            <td>{log.is_admin}</td>
-                            <td>{log.login_time}</td>
+                            <td>{log.is_admin ? 'Ano' : 'Ne'}</td>
                             <td>
-                                <button onClick={() => handleDelete(index)}>Smazat</button>
+                                <button onClick={() => handleDelete(log.id)} style={styles.button}>Smazat</button>
                             </td>
                         </tr>
                     ))}
@@ -74,3 +89,45 @@ function LogTable({ logs }) {
         </div>
     );
 }
+
+const styles = {
+    container: {
+        padding: '20px',
+        fontFamily: 'Arial, sans-serif',
+    },
+    control: {
+        marginBottom: '20px',
+    },
+    input: {
+        marginLeft: '10px',
+        padding: '5px',
+        fontSize: '14px',
+    },
+    table: {
+        width: '100%',
+        borderCollapse: 'collapse',
+    },
+    row: {
+        borderBottom: '1px solid #ddd',
+    },
+    th: {
+        backgroundColor: '#f2f2f2',
+        padding: '10px',
+        textAlign: 'left',
+    },
+    td: {
+        padding: '10px',
+        textAlign: 'left',
+    },
+    button: {
+        padding: '5px 10px',
+        backgroundColor: '#f44336',
+        color: 'white',
+        border: 'none',
+        borderRadius: '3px',
+        cursor: 'pointer',
+    },
+    buttonHover: {
+        backgroundColor: '#d32f2f',
+    },
+};
